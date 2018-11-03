@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Jeu Mario Gusta Main</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="processing.js"></script>
+    <script type="text/javascript" src="minim.js"></script>
+    <script type="text/javascript" src="canvasFocus.js"></script>
+    <script type="text/javascript" src="editor.js"></script>
+    <script type="text/javascript">
+      var sketch;
+
+      function bindSketch() {
+        sketch = Processing.getInstanceById("testcanvas");
+        if(!sketch || !sketch.bindJavaScript) {
+          setTimeout(bindSketch, 250);
+        } else {
+          sketch.bindJavaScript(this); 
+
+          // slap a monitor on Mario
+          if(false && ProcessingInspector) {
+            var sketch = Processing.getInstanceById("testcanvas")
+            var screen = sketch.getScreen("Main Level")
+            var layer = screen.getLevelLayer("Main Layer")
+            var mario = layer.players.get(0)
+       
+            var logPropChange = function(sketch, o, attr) {
+              var input = document.getElementById(attr+'_control');
+              input.onchange = function() { 
+                o[attr] = input.value; 
+                sketch.redraw();
+              }
+              return function(obj, attr, val) {
+                input.value = val;
+              };
+            };
+
+            ProcessingInspector.monitor(mario, "x", logPropChange(sketch, mario, "x"));
+            ProcessingInspector.monitor(mario, "y", logPropChange(sketch, mario, "y"));
+          }
+        }
+      }
+
+      function init() {
+        document.removeEventListener("DOMContentLoaded",init,false);
+        var canvas = document.getElementById("testcanvas");
+        canvas.focus();
+        bindSketch();
+      }
+
+      document.addEventListener("DOMContentLoaded",init,false);
+    </script>
+    <style>
+      canvas {
+        display: inline-block;
+      }
+      #editor {
+        display: inline-block;
+        vertical-align: top;
+      }
+      .tab {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Jeu Mario Gusta Main</h1>
+    
+    <canvas id="testcanvas"
+            data-processing-sources="preloads.pde
+																							  codebase.pde
+																							  mario.pde
+																							  
+																							  mariolevel.pde
+																							  levels_bonuslevel.pde
+																							  levels_darklevel.pde
+																							  levels_mainlevel.pde
+																							  
+																							  mariolayer.pde
+																							  layers_background.pde
+																							  layers_bonuslayer.pde
+																							  layers_bonuslayer_bg.pde
+																							  layers_colorlayer.pde
+																							  layers_darklevellayer.pde
+																							  layers_mainlayer.pde
+																							  
+																							  hero.pde
+																							  enemy.pde
+																							  enemy_BlockCoinBoo.pde
+																							  enemy_banzaibill.pde
+																							  enemy_bonustarget.pde
+																							  enemy_koopa.pde
+																							  enemy_koopa_flying.pde
+																							  enemy_muncher.pde
+																							  
+																							  specials_block.pde
+																							  specials_keys.pde
+																							  specials_tubes.pde
+																							  pickups.pde
+																							  triggers.pde"
+            style="border: 1px solid black;"
+            tabindex="1"></canvas>
+            
+    <div id="editor">
+		x: <input id="x_control" type="number" min="-100" max="100" step="1"><br>
+		y: <input id="y_control" type="number" min="-100" max="100" step="1"><br>
+		<h2 class="font_4" style="font-size:23px; line-height:1.4em;">&nbsp;</h2>
+		<h2 class="font_3" style="font-size:23px; line-height:1.4em;">Commandes du jeu : </h2>
+		<h2 class="font_3" style="font-size:23px; line-height:1.4em;">&nbsp; Z : Sauter</h2>
+		<h2 class="font_3" style="font-size:23px; line-height:1.4em;">&nbsp; Q : Aller à Gauche </h2>
+		<h2 class="font_3" style="font-size:23px; line-height:1.4em;">&nbsp; S : S'accroupir </h2>
+		<h2 class="font_3" style="font-size:23px; line-height:1.4em;">&nbsp; D : Aller à Droite </h2>
+		<h2 class="font_3" style="font-size:23px; line-height:1.4em;">&nbsp; Clique de la souris : Pouvoir de Mario </h2>
+    </div>
+
+  </body>
+</html>
